@@ -1,0 +1,18 @@
+[project]
+name = "bekku-rc-advocate"
+version = "0.1.0"
+description = "Bekku — Autonomous Developer Advocacy Agent for RevenueCat"
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph>=0.2.0",
+    "langchain-openai>=0.3.0",
+    "langchain-core>=0.3.0",
+    "openai>=1.0.0",
+    "PyGithub>=2.0.0",
+    "httpx>=0.27.0",
+    "python-dotenv>=1.0.0",
+    "structlog>=24.0.0",
+]
+
+[project.scripts]
+bekku = "src.graph:main"
