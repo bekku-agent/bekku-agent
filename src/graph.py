@@ -1,20 +1,20 @@
-"""Bekku — LangGraph orchestrator for the multi-agent content pipeline."""
+"""Bekku — LangGraph orchestrator with intent-based routing."""
 
 from __future__ import annotations
 
 import asyncio
 import sys
-from pathlib import Path
 
 from dotenv import load_dotenv
-from langgraph.graph import StateGraph
+from langgraph.graph import END, StateGraph
 import structlog
 
 from src.nodes.publisher import publish
 from src.nodes.reporter import report
 from src.nodes.researcher import research
+from src.nodes.router import route
 from src.nodes.writer import write
-from src.state import AgentState, Mode
+from src.state import AgentState
 
 load_dotenv()
 structlog.configure(
@@ -25,79 +25,107 @@ structlog.configure(
 logger = structlog.get_logger()
 
 
-def build_async_graph() -> StateGraph:
-    """Build the async content production graph."""
+# --- Routing logic ---
+
+def _route_after_router(state: AgentState) -> str:
+    """Conditional edge: skip researcher for interactive tasks."""
+    if state.task_type == "interactive":
+        return "writer"
+    return "researcher"
+
+
+def _route_after_writer(state: AgentState) -> str:
+    """Conditional edge: skip publisher for interactive tasks."""
+    if state.task_type == "interactive":
+        return "reporter"
+    return "publisher"
+
+
+# --- Build graph ---
+
+def _build_graph():
+    """Build the Bekku pipeline graph with conditional routing.
+
+    content/feedback: router → researcher → writer → publisher → reporter
+    interactive:      router → writer → reporter
+    """
     graph = StateGraph(AgentState)
 
-    graph.add_node("research", research)
-    graph.add_node("write", write)
-    graph.add_node("publish", publish)
-    graph.add_node("report", report)
+    # Nodes
+    graph.add_node("router", route)
+    graph.add_node("researcher", research)
+    graph.add_node("writer", write)
+    graph.add_node("publisher", publish)
+    graph.add_node("reporter", report)
 
-    graph.set_entry_point("research")
-    graph.add_edge("research", "write")
-    graph.add_edge("write", "publish")
-    graph.add_edge("publish", "report")
-    graph.set_finish_point("report")
+    # Entry
+    graph.set_entry_point("router")
+
+    # Conditional: router → researcher or writer
+    graph.add_conditional_edges(
+        "router",
+        _route_after_router,
+        {"researcher": "researcher", "writer": "writer"},
+    )
+
+    # researcher always → writer
+    graph.add_edge("researcher", "writer")
+
+    # Conditional: writer → publisher or reporter
+    graph.add_conditional_edges(
+        "writer",
+        _route_after_writer,
+        {"publisher": "publisher", "reporter": "reporter"},
+    )
+
+    # publisher always → reporter
+    graph.add_edge("publisher", "reporter")
+
+    # Finish
+    graph.set_finish_point("reporter")
 
     return graph.compile()
 
 
-async def run_async_pipeline(topic: str) -> AgentState:
-    """Run the full async content pipeline for a topic."""
-    logger.info("pipeline_start", topic=topic)
+# Module-level compiled graph — referenced by langgraph.json
+graph = _build_graph()
 
-    graph = build_async_graph()
-    initial_state = AgentState(topic=topic, mode=Mode.ASYNC)
 
+# --- CLI ---
+
+async def run(task: str) -> AgentState:
+    """Run the full pipeline for a task."""
+    logger.info("pipeline_start", task=task[:80])
+    initial_state = AgentState(task=task)
     result = await graph.ainvoke(initial_state)
-
-    logger.info(
-        "pipeline_done",
-        title=result.title if hasattr(result, "title") else result.get("title", ""),
-        gist_url=result.gist_url if hasattr(result, "gist_url") else result.get("gist_url", ""),
-    )
+    logger.info("pipeline_done", task_type=result.get("task_type", ""), published_url=result.get("published_url", ""))
     return result
-
-
-async def run_interactive(prompt: str) -> str:
-    """Run interactive mode — respond to a live prompt."""
-    from openai import AsyncOpenAI
-
-    system_prompt = (Path(__file__).parent / "prompts" / "interactive.md").read_text()
-    client = AsyncOpenAI()
-
-    response = await client.chat.completions.create(
-        model="gpt-4o",
-        max_tokens=4096,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": prompt},
-        ],
-    )
-
-    return response.choices[0].message.content
 
 
 def main():
     """CLI entry point."""
     if len(sys.argv) < 2:
-        print("Usage: bekku <topic>")
-        print("       bekku --interactive <prompt>")
+        print("Usage: python -m src.graph <task description>")
+        print("\nExamples:")
+        print('  python -m src.graph "Write a blog post about paywall best practices"')
+        print('  python -m src.graph "How do I set up RevenueCat in a Flutter app?"')
+        print('  python -m src.graph "What could RevenueCat improve about their API?"')
         sys.exit(1)
 
-    if sys.argv[1] == "--interactive":
-        prompt = " ".join(sys.argv[2:])
-        result = asyncio.run(run_interactive(prompt))
-        print(result)
-    else:
-        topic = " ".join(sys.argv[1:])
-        result = asyncio.run(run_async_pipeline(topic))
-        if hasattr(result, "gist_url"):
-            url = result.gist_url
-        else:
-            url = result.get("gist_url", "N/A")
-        print(f"\nPublished: {url}")
+    task = " ".join(sys.argv[1:])
+    result = asyncio.run(run(task))
+
+    # Print output
+    task_type = result.get("task_type", "") if isinstance(result, dict) else result.task_type
+    draft = result.get("draft", "") if isinstance(result, dict) else result.draft
+    url = result.get("published_url", "") if isinstance(result, dict) else result.published_url
+
+    print(f"\n{'='*60}")
+    print(f"Task type: {task_type}")
+    if url:
+        print(f"Published: {url}")
+    print(f"{'='*60}\n")
+    print(draft)
 
 
 if __name__ == "__main__":

@@ -398,6 +398,53 @@ RC evaluates for values alignment in the panel interview. Their core values:
 
 ---
 
+## Larry Context & Bekku Positioning
+
+### Who is Larry?
+- Larry is an OpenClaw agent built by Oliver Henry, who works at RevenueCat
+- Runs on an old gaming PC (NVIDIA 2070 Super) with Ubuntu
+- Autonomous TikTok growth agent: generates slideshow images (gpt-image-1.5), writes hooks/captions, posts via Postiz API, tracks analytics
+- 8M+ TikTok views, 500K+ in first 5 days, $714 MRR from 108 paying subscribers
+- Uses RevenueCat analytics (via official ClawHub skill built by RC's CEO @jeiting) to cross-reference post timestamps with conversion data for real attribution
+- Larry's secret: 500+ line skill files that encode every failure as a rule and every success as a formula. The system compounds.
+- Larry has his own X account (@LarryClawerence) and co-writes articles with Oliver
+
+### What Larry Does (Growth Agent)
+- Generates TikTok slideshow content autonomously
+- Posts via Postiz API as drafts (Oliver adds music + publishes in ~60 seconds)
+- Tracks views vs conversions via RevenueCat
+- Iterates: high views + low conversion = fix CTA, low views + high conversion = fix hook
+- Optimizes for revenue, not vanity metrics
+
+### What Larry Does NOT Do (Bekku's Lane)
+- Write SDK integration tutorials
+- Produce technical documentation or code samples
+- Answer developer questions on community forums
+- File structured product feedback reports
+- Engage with the developer community on GitHub/Discord
+
+### Bekku's Positioning
+Larry proved an agent can drive app growth through autonomous content creation. Bekku is the other half — the agent that helps developers build with RevenueCat in the first place. Larry creates demand. Bekku enables adoption. Together, they complete the loop.
+
+"RevenueCat already has a growth agent. What it needs is a developer advocacy agent. That's Bekku."
+
+### Key Lesson from Larry: Skill Files > Model
+Larry's success wasn't the AI model. It was the 500+ line skill file that encoded every failure, every rule, every formula. Bekku should work the same way:
+- `skills/revenuecat-knowledge.md` — grows with every doc ingested
+- `skills/technical-writing.md` — encodes what makes good developer content
+- `skills/product-feedback.md` — structures observations consistently
+- `skills/failure-log.md` — compounds learnings over time
+
+The agent gets smarter with every run, not because the model improves, but because the skill files improve.
+
+### OpenClaw Ecosystem Note
+- RevenueCat's CEO (@jeiting) created the official RevenueCat skill on ClawHub
+- Oliver uses only 2 ClawHub skills: RevenueCat (by @jeiting) and Bird (by @steipete, OpenClaw creator)
+- The Larry skill is now free on ClawHub/Playbooks for anyone to use
+- RevenueCat is deeply invested in the OpenClaw ecosystem
+
+---
+
 ## Quick Reference
 
 ```
