@@ -398,15 +398,194 @@ RC evaluates for values alignment in the panel interview. Their core values:
 
 ---
 
+## Larry Context & Bekku Positioning
+
+### Who is Larry?
+- Larry is an OpenClaw agent built by Oliver Henry, who works at RevenueCat
+- Runs on an old gaming PC (NVIDIA 2070 Super) with Ubuntu
+- Autonomous TikTok growth agent: generates slideshow images (gpt-image-1.5), writes hooks/captions, posts via Postiz API, tracks analytics
+- 8M+ TikTok views, 500K+ in first 5 days, $714 MRR from 108 paying subscribers
+- Uses RevenueCat analytics (via official ClawHub skill built by RC's CEO @jeiting) to cross-reference post timestamps with conversion data for real attribution
+- Larry's secret: 500+ line skill files that encode every failure as a rule and every success as a formula. The system compounds.
+- Larry has his own X account (@LarryClawerence) and co-writes articles with Oliver
+
+### What Larry Does (Growth Agent)
+- Generates TikTok slideshow content autonomously
+- Posts via Postiz API as drafts (Oliver adds music + publishes in ~60 seconds)
+- Tracks views vs conversions via RevenueCat
+- Iterates: high views + low conversion = fix CTA, low views + high conversion = fix hook
+- Optimizes for revenue, not vanity metrics
+
+### What Larry Does NOT Do (Bekku's Lane)
+- Write SDK integration tutorials
+- Produce technical documentation or code samples
+- Answer developer questions on community forums
+- File structured product feedback reports
+- Engage with the developer community on GitHub/Discord
+
+### Bekku's Positioning
+Larry proved an agent can drive app growth through autonomous content creation. Bekku is the other half — the agent that helps developers build with RevenueCat in the first place. Larry creates demand. Bekku enables adoption. Together, they complete the loop.
+
+"RevenueCat already has a growth agent. What it needs is a developer advocacy agent. That's Bekku."
+
+### Key Lesson from Larry: Skill Files > Model
+Larry's success wasn't the AI model. It was the 500+ line skill file that encoded every failure, every rule, every formula. Bekku should work the same way:
+- `skills/revenuecat-knowledge.md` — grows with every doc ingested
+- `skills/technical-writing.md` — encodes what makes good developer content
+- `skills/product-feedback.md` — structures observations consistently
+- `skills/failure-log.md` — compounds learnings over time
+
+The agent gets smarter with every run, not because the model improves, but because the skill files improve.
+
+### OpenClaw Ecosystem Note
+- RevenueCat's CEO (@jeiting) created the official RevenueCat skill on ClawHub
+- Oliver uses only 2 ClawHub skills: RevenueCat (by @jeiting) and Bird (by @steipete, OpenClaw creator)
+- The Larry skill is now free on ClawHub/Playbooks for anyone to use
+- RevenueCat is deeply invested in the OpenClaw ecosystem
+
+---
+
+## Roadmap: RevenueCat Contract (6 Months)
+
+### Weekly KPIs
+| Metric | Target | How Bekku Delivers |
+|--------|--------|--------------------|
+| Content pieces | 2+ | Router → Researcher → Writer → Publisher pipeline |
+| Growth experiments | 1+ | Growth experiment node (planned) with RC Charts API attribution |
+| Community interactions | 50+ | Community engagement node (planned) across X, GitHub, Discord, forums |
+| Product feedback items | 3+ | Feedback route → MCP-grounded observations → structured reports |
+| Weekly check-in report | 1 | Reporter node auto-generates activity summary with metrics |
+
+### Month 1: Foundation
+- Ingest all RC documentation, SDKs, API references via llms.txt + page fetching
+- Publish first 10 pieces of original technical + growth content
+- Set up Slack channel, blog CMS access, Charts API integration
+- Complete first product feedback cycle: use RC as an agent developer, identify friction, submit structured report
+- Establish public presence on X (@bekku_agent) and GitHub (bekku-agent)
+
+### Month 2-3: Compounding
+- 30+ published pieces that agent developers actually reference and share
+- Become the go-to resource for "how do I use RevenueCat as an agent?"
+- Deliver product roadmap input document based on agent community patterns
+- Collaborate with human advocacy team on 2+ joint initiatives
+- Skill files are 10x richer — every run compounds domain knowledge
+
+### Month 4-6: Ownership
+- Own a content stream end-to-end: ideation → creation → publishing → distribution
+- Measurable impact on RC visibility in agent dev ecosystem (tracked via content reach, community engagement, inbound mentions)
+- Contribute to at least 1 shipped product improvement from Bekku's feedback
+- Make the case for extending/expanding the role
+
+### Growth Experiments Bekku Would Run
+1. **Content format A/B testing** — tutorial vs quick tip vs case study vs code sample. Track which format drives more SDK installs via RC Charts API timestamp correlation.
+2. **Programmatic SEO** — auto-generate "RevenueCat + [framework]" pages for every SDK (Flutter, React Native, Swift, Kotlin, Unity). Target long-tail developer search queries.
+3. **Distribution channel comparison** — same content published as X thread, blog post, GitHub gist, Discord post. Measure reach and conversion per channel.
+4. **Community response time experiment** — answer forum/Discord questions within 5 min vs 30 min vs 1 hour. Track engagement and developer sentiment.
+5. **Content-to-conversion attribution** — cross-reference content publish timestamps with RC Charts API conversion data. Same technique Larry uses for TikTok → measure which content actually drives signups.
+
+---
+
+## Build Status
+
+### ✅ Built
+- **Router** — GPT-4o classifies task → content / interactive / feedback
+- **Researcher** — fetches llms.txt, picks relevant doc pages with GPT-4o-mini, fetches concurrently with httpx, synthesizes with o3
+- **Writer** — o3 with task-type-specific system prompts, skill.md context injection, markdown validation
+- **Publisher** — GitHub Gist via PyGithub API
+- **Reporter** — activity logging, skill file compounding (appends learnings after each run)
+- **HIL Approval** — LangGraph interrupt before publish, operator can edit/approve/reject
+- **Skill Files** — revenuecat-knowledge.md, technical-writing.md, product-feedback.md, failure-log.md
+- **Streamlit UI** — single input, example buttons, side-by-side markdown editor + preview, run history
+- **Config layer** — config.yaml for company-agnostic deployment
+
+### 🚧 Next (Post-Application)
+- **Growth experiment node** — design experiment, execute, measure via Charts API, iterate
+- **Community engagement node** — monitor X/Discord/forums, respond to questions, track interaction count
+- **Charts API integration** — pull RC analytics for content-to-conversion attribution
+- **X/Discord publishing** — publish directly to social channels (not just Gists)
+- **Scheduled runs** — cron-triggered content production (2 pieces/week automated)
+- **Persistent storage** — database for run history, experiment results, community interactions (see SaaS architecture below)
+
+---
+
+## Beyond RC: Product Vision
+
+### The Opportunity
+Every developer tool company needs the same thing RevenueCat needs: technical content, community engagement, product feedback, growth experiments. Stripe, Supabase, Vercel, Clerk, Neon, Resend — they all have developer advocacy teams doing this manually.
+
+Bekku isn't a one-off agent for one company. It's a framework for **AI Developer Advocacy as a Service**.
+
+### What Makes It a Product
+The framework is already company-agnostic:
+- `config.yaml` separates company-specific config (docs URL, MCP endpoint, brand voice) from the pipeline
+- Skill files are per-deployment — each client accumulates their own domain knowledge
+- The graph topology (router → researcher → writer → approval → publisher → reporter) works for any company
+
+### SaaS Architecture (Planned)
+```
+┌─────────────────────────────────────────────────┐
+│                   Bekku Platform                 │
+├─────────────────────────────────────────────────┤
+│  Frontend (Next.js)                              │
+│  - Client dashboard: runs, drafts, approvals     │
+│  - Analytics: content performance, growth metrics │
+│  - Config UI: docs URL, brand voice, channels     │
+├─────────────────────────────────────────────────┤
+│  API Layer (FastAPI)                              │
+│  - Auth (API keys / OAuth per client)             │
+│  - Run management (trigger, approve, reject)      │
+│  - Webhook endpoints for integrations             │
+├─────────────────────────────────────────────────┤
+│  Pipeline Engine (LangGraph)                      │
+│  - Router → Researcher → Writer → Publisher       │
+│  - Growth experiment runner                       │
+│  - Community engagement monitor                   │
+│  - HIL approval gates                             │
+├─────────────────────────────────────────────────┤
+│  Storage Layer                                    │
+│  - PostgreSQL: run history, client configs,        │
+│    experiment results, community interactions      │
+│  - Redis: job queue, caching (llms.txt, etc.)      │
+│  - S3/R2: published artifacts, skill file backups  │
+├─────────────────────────────────────────────────┤
+│  Integrations                                     │
+│  - GitHub (Gists, repos)                          │
+│  - X (posts, replies, threads)                    │
+│  - Discord (messages, forum replies)              │
+│  - CMS (blog publishing via API)                  │
+│  - Analytics (RC Charts, Stripe Dashboard, etc.)  │
+└─────────────────────────────────────────────────┘
+```
+
+### Phased Rollout
+**Phase 1 — RC Contract (Months 1-6):** Prove the model works for one company. Ship content, run experiments, compound skill files. Bekku is the case study.
+
+**Phase 2 — Open Source + First Clients (Months 7-12):** Open-source the framework. Config-driven deployment. Onboard 3 paying customers (other dev tool companies). Pricing: $2-5K/month per instance.
+
+**Phase 3 — Platform (Year 2):** Managed service — companies get their own Bekku instance with dashboard, analytics, and accumulated domain knowledge. Skill files are the moat: after 6 months on a client, the agent has domain expertise no competitor can replicate on day one.
+
+### The Moat
+1. **Skill files compound** — every run makes the next one better. A new competitor starts from zero.
+2. **Client-specific knowledge** — 6 months at RC means Bekku knows RC's docs, API quirks, community patterns, and content that works. That's not transferable.
+3. **Pipeline, not model** — the value isn't GPT-4o or o3. It's the graph, the routing, the HIL, the compounding. Models are commodities. Workflows are not.
+
+---
+
 ## Quick Reference
 
 ```
 AGENT STACK:
-  LangGraph + Claude + MCP Tools + GitHub API
+  LangGraph + OpenAI (o3 / gpt-4o) + GitHub API + Streamlit UI
 
-OPERATING MODES:
-  1. Async: Topic → Research → Write → Publish → Report
-  2. Interactive: Prompt → Reason → Respond (for interviews)
+PIPELINE:
+  router → researcher → writer → ⏸ approval → publisher → reporter
+  (interactive tasks skip researcher + approval + publisher)
+
+MODELS:
+  Router: gpt-4o (classification)
+  URL picker: gpt-4o-mini (speed)
+  Researcher: o3 (deep reasoning)
+  Writer: o3 (quality output)
 
 REVENUECAT MCP:
   URL: https://mcp.revenuecat.ai/mcp
@@ -414,9 +593,7 @@ REVENUECAT MCP:
   26 tools: projects, apps, products, entitlements, offerings, paywalls
 
 PUBLISHING:
-  GitHub Gists (autonomous)
-  GitHub Repo commits (autonomous)
-  LinkedIn (operator-assisted distribution)
+  GitHub Gists (autonomous, HIL-approved)
 
 MANTRA:
   "The artifacts are the application. Ship quality work. Let it speak for itself."
