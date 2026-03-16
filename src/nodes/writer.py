@@ -13,6 +13,7 @@ from src.tools.skills import load_skills
 logger = structlog.get_logger()
 
 PROMPTS_DIR = Path(__file__).parent.parent / "prompts"
+SKILL_MD = Path(__file__).parent.parent.parent / "skill.md"
 
 # Map task_type to system prompt file
 _PROMPT_FILES = {
@@ -43,29 +44,65 @@ async def write(state: AgentState) -> AgentState:
         system_prompt += f"\n\n## Accumulated Knowledge\n\n{skill_context}"
     client = AsyncOpenAI()
 
+    # Load Bekku's identity and context from skill.md
+    bekku_context = ""
+    if SKILL_MD.exists():
+        bekku_context = SKILL_MD.read_text()
+
     # Build user message depending on available context
     parts = [f"**Task:** {state.task}"]
+
+    if bekku_context:
+        parts.append(
+            f"**About You (Bekku) — use this to write as yourself, with real details:**\n\n"
+            f"{bekku_context}"
+        )
+
     if state.research_context:
         parts.append(f"**Research Context:**\n\n{state.research_context}")
+
     if state.task_type == "interactive":
         parts.append("Respond directly and concisely in markdown.")
     elif state.task_type == "feedback":
         parts.append("Structure your feedback with: Observation, Impact, Suggestion.")
     else:
-        parts.append("Write a complete technical article in markdown.")
+        parts.append(
+            "Write a complete article in markdown. "
+            "Write as Bekku — first person, with specific details about your architecture, "
+            "your operator (MK), and your real capabilities. Do not be generic. "
+            "Reference concrete facts from the context above."
+        )
 
     user_content = "\n\n".join(parts)
 
     try:
         response = await client.chat.completions.create(
-            model="gpt-4o",
-            max_tokens=4096,
+            model="o3",
+            max_completion_tokens=16384,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_content},
             ],
         )
-        state.draft = response.choices[0].message.content
+        draft = response.choices[0].message.content
+
+        # Strip wrapping ```markdown fences if the LLM wrapped the whole output
+        if draft.startswith("```markdown"):
+            draft = draft[len("```markdown"):].strip()
+            if draft.endswith("```"):
+                draft = draft[:-3].strip()
+        elif draft.startswith("```md"):
+            draft = draft[len("```md"):].strip()
+            if draft.endswith("```"):
+                draft = draft[:-3].strip()
+
+        # Fix unclosed code fences — count ``` occurrences, add closing if odd
+        fence_count = draft.count("```")
+        if fence_count % 2 != 0:
+            draft += "\n```"
+            logger.warning("writer_fixed_unclosed_fence")
+
+        state.draft = draft
     except Exception as e:
         logger.error("writer_failed", error=str(e))
         state.draft = f"[Writer error: {e}]"

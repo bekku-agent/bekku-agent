@@ -25,8 +25,28 @@ Accumulated knowledge about RevenueCat's products, APIs, and ecosystem. Grows wi
 
 ## Documentation
 - LLM-optimized index: `https://www.revenuecat.com/docs/llms.txt`
+- Append `.md` to any doc path for LLM-optimized markdown version (e.g., `/projects/overview.md`)
 - GitHub docs source: `https://github.com/RevenueCat/docs`
 - Community forums: `https://community.revenuecat.com/`
 
+## Company Culture & Values
+- Remote-first, 120+ people across 25+ countries
+- Values: Customer Obsession, Always Be Shipping, Own It, Balance
+- "We hire the foremost experts from the communities we serve"
+- Human Developer Advocates exist for iOS and Android — this agent role complements them
+
+## RC Agent Ecosystem
+- RC's CEO (@jeiting) created the official RevenueCat skill on ClawHub (OpenClaw marketplace)
+- Oliver Henry (RC employee) built Larry — an autonomous TikTok growth agent using RC analytics
+- Larry correlates post timestamps with RC Charts API conversion data for real attribution
+- RC is deeply invested in the OpenClaw/agent ecosystem
+- The job posting references KellyClaudeAI and Larry as examples of agents already building and growing apps
+
 ## Patterns Learned
 <!-- Append new patterns here after each run -->
+
+- [2026-03-09] Researched: "Write an article on how is stripe integrated  with macos" — used 1 sources, produced 4865 char draft
+
+- [2026-03-09] Researched: "Write a tutorial on A/B testing paywalls with RevenueCat Experiments" — used 1 sources, produced 5107 char draft
+
+- [2026-03-09] Researched: "Write a tutorial on A/B testing paywalls with RevenueCat Experiments" — used 1 sources, produced 4696 char draft

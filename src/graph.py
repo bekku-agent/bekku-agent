@@ -1,4 +1,4 @@
-"""Bekku — LangGraph orchestrator with intent-based routing."""
+"""Bekku — LangGraph orchestrator with intent routing and human-in-the-loop approval."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ import sys
 
 from dotenv import load_dotenv
 from langgraph.graph import END, StateGraph
+from langgraph.types import interrupt, Command
 import structlog
 
 from src.nodes.publisher import publish
@@ -38,16 +39,63 @@ def _route_after_writer(state: AgentState) -> str:
     """Conditional edge: skip publisher for interactive tasks."""
     if state.task_type == "interactive":
         return "reporter"
+    return "approval"
+
+
+# --- Human-in-the-loop approval node ---
+
+def approve(state: AgentState) -> AgentState:
+    """Pause for operator approval before publishing.
+
+    The operator can:
+    - approve: continue to publisher as-is
+    - edit: update the draft, then continue to publisher
+    - reject: skip publisher, go straight to reporter
+    """
+    decision = interrupt({
+        "task": state.task,
+        "task_type": state.task_type,
+        "draft": state.draft,
+        "sources": state.sources,
+        "message": "Review the draft. Reply with: approve, reject, or provide edited content.",
+    })
+
+    if isinstance(decision, dict):
+        action = decision.get("action", "approve")
+        if action == "edit" and "draft" in decision:
+            state.draft = decision["draft"]
+            logger.info("draft_edited_by_operator")
+        elif action == "reject":
+            state.draft = "[Rejected by operator]"
+            state.error = "Draft rejected by operator"
+            logger.info("draft_rejected")
+    elif isinstance(decision, str):
+        if decision.lower() == "reject":
+            state.draft = "[Rejected by operator]"
+            state.error = "Draft rejected by operator"
+            logger.info("draft_rejected")
+        elif decision.lower() != "approve":
+            # Treat any other string as an edited draft
+            state.draft = decision
+            logger.info("draft_edited_by_operator")
+
+    return state
+
+
+def _route_after_approval(state: AgentState) -> str:
+    """Skip publisher if draft was rejected."""
+    if state.error and "rejected" in state.error.lower():
+        return "reporter"
     return "publisher"
 
 
-# --- Build graph ---
+# --- Build graphs ---
 
 def _build_graph():
-    """Build the Bekku pipeline graph with conditional routing.
+    """Build the Bekku pipeline graph with conditional routing and HIL.
 
-    content/feedback: router → researcher → writer → publisher → reporter
-    interactive:      router → writer → reporter
+    content/feedback: router → researcher → writer → ⏸ approval → publisher → reporter
+    interactive:      router → writer → reporter (no approval needed)
     """
     graph = StateGraph(AgentState)
 
@@ -55,6 +103,7 @@ def _build_graph():
     graph.add_node("router", route)
     graph.add_node("researcher", research)
     graph.add_node("writer", write)
+    graph.add_node("approval", approve)
     graph.add_node("publisher", publish)
     graph.add_node("reporter", report)
 
@@ -71,10 +120,17 @@ def _build_graph():
     # researcher always → writer
     graph.add_edge("researcher", "writer")
 
-    # Conditional: writer → publisher or reporter
+    # Conditional: writer → approval or reporter (interactive skips approval)
     graph.add_conditional_edges(
         "writer",
         _route_after_writer,
+        {"approval": "approval", "reporter": "reporter"},
+    )
+
+    # Conditional: approval → publisher or reporter (rejected skips publish)
+    graph.add_conditional_edges(
+        "approval",
+        _route_after_approval,
         {"publisher": "publisher", "reporter": "reporter"},
     )
 
@@ -94,7 +150,7 @@ graph = _build_graph()
 # --- CLI ---
 
 async def run(task: str) -> AgentState:
-    """Run the full pipeline for a task."""
+    """Run the pipeline. For content/feedback tasks, this will pause at approval."""
     logger.info("pipeline_start", task=task[:80])
     initial_state = AgentState(task=task)
     result = await graph.ainvoke(initial_state)

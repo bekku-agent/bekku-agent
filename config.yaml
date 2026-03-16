@@ -1,0 +1,19 @@
+# Bekku — Agent Configuration
+# Swap these values to deploy for any company.
+
+company:
+  name: "RevenueCat"
+  tagline: "In-app subscription management for mobile apps"
+  docs_url: "https://www.revenuecat.com/docs/llms.txt"
+  mcp_endpoint: "https://mcp.revenuecat.ai/mcp"
+
+agent:
+  name: "Bekku"
+  voice: "Technical but approachable. First person. No hype, no fluff."
+  operator: "MK (@mkshivaswami)"
+
+publisher:
+  type: "github_gist"  # Options: github_gist, dev_to, custom_api
+  public: true
+
+skills_dir: "skills"

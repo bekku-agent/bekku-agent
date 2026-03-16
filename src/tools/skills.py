@@ -13,9 +13,22 @@ SKILLS_DIR = Path(__file__).parent.parent.parent / "skills"
 
 # Which skill files each node should load
 NODE_SKILLS: dict[str, list[str]] = {
-    "researcher": ["revenuecat-knowledge.md"],
-    "writer": ["revenuecat-knowledge.md", "technical-writing.md"],
-    "feedback_writer": ["revenuecat-knowledge.md", "product-feedback.md"],
+    "researcher": [
+        "revenuecat-knowledge.md",
+        "job-description.md",
+        "competitive-landscape.md",
+    ],
+    "writer": [
+        "revenuecat-knowledge.md",
+        "technical-writing.md",
+        "job-description.md",
+        "competitive-landscape.md",
+    ],
+    "feedback_writer": [
+        "revenuecat-knowledge.md",
+        "product-feedback.md",
+        "job-description.md",
+    ],
 }
 
 
