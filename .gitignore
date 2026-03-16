@@ -6,3 +6,5 @@ dist/
 *.egg-info/
 .langgraph/
 .langsmith/
+.DS_Store
+src.zip

@@ -14,14 +14,13 @@ async def publish(state: AgentState) -> AgentState:
     """Publish the draft to a GitHub Gist. Returns the Gist URL."""
     logger.info("publisher_start", task=state.task[:80])
 
-    # Build a filename from the task
+    # Build a clean title from the task (create_gist adds .md)
     slug = state.task.lower().replace(" ", "-")
     slug = "".join(c for c in slug if c.isalnum() or c == "-")[:50]
-    filename = f"{slug}.md"
 
     try:
         gist_url = create_gist(
-            title=filename,
+            title=slug,
             content=state.draft,
             description=f"Bekku: {state.task[:100]}",
         )
