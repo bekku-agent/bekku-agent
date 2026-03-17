@@ -13,7 +13,6 @@ autonomous:
   - React Native/TypeScript
   - Web/TypeScript
 topic_queue:
-- Write a tutorial on migrating from StoreKit 1 to StoreKit 2 with RevenueCat
 - Write a case study on using RevenueCat entitlements for feature gating patterns
 - "Write a guide on integrating RevenueCat with a Flutter app \u2014 from zero to\
   \ first purchase"
