@@ -24,7 +24,7 @@ load_dotenv()
 
 
 def get_repo():
-    token = os.environ["GITHUB_TOKEN"]
+    token = os.environ.get("GH_TOKEN") or os.environ["GITHUB_TOKEN"]
     repo_name = os.environ.get("GITHUB_REPO", "bekku-agent/bekku-agent")
     gh = Github(token)
     return gh.get_repo(repo_name)
