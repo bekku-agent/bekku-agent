@@ -78,6 +78,10 @@ def create_review_issue(result: dict) -> str:
     social = result["social_posts"]
     sources = result["sources"]
 
+    # Clean the draft — strip metadata (title/summary/tags/body:) for display
+    from src.nodes.publisher import _extract_title_and_body
+    title, clean_body = _extract_title_and_body(draft)
+
     # Build issue body — use unique markers so we can extract the draft later
     body_parts = [
         "## Draft for Review\n",
@@ -85,7 +89,7 @@ def create_review_issue(result: dict) -> str:
         f"**Type:** {result['task_type']}\n",
         f"**Sources:** {len(sources)}\n",
         "<!-- DRAFT_START -->\n",
-        draft,
+        clean_body,
         "\n<!-- DRAFT_END -->\n",
     ]
 
@@ -106,10 +110,10 @@ def create_review_issue(result: dict) -> str:
 
     body = "\n".join(body_parts)
 
-    # Create issue
-    title = f"[Bekku Draft] {task[:80]}"
+    # Create issue — use article title if available, fall back to task
+    issue_title = f"[Bekku Draft] {title or task[:80]}"
     issue = repo.create_issue(
-        title=title,
+        title=issue_title,
         body=body,
         labels=["bekku-draft", "awaiting-review"],
     )
