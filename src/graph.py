@@ -1,4 +1,10 @@
-"""Bekku — LangGraph orchestrator with intent routing and human-in-the-loop approval."""
+"""Bekku — LangGraph orchestrator with learning loop, intent routing, and human-in-the-loop approval.
+
+Architecture (Larry-inspired learning loop):
+  planner → router → researcher → writer → ⏸ approval → publisher → analyzer
+     ▲                                                                   │
+     └──────────── skills/*.md (compounding knowledge) ◄─────────────────┘
+"""
 
 from __future__ import annotations
 
@@ -10,8 +16,9 @@ from langgraph.graph import END, StateGraph
 from langgraph.types import interrupt, Command
 import structlog
 
+from src.nodes.analyzer import analyze
+from src.nodes.planner import plan
 from src.nodes.publisher import publish
-from src.nodes.reporter import report
 from src.nodes.researcher import research
 from src.nodes.router import route
 from src.nodes.writer import write
@@ -29,16 +36,17 @@ logger = structlog.get_logger()
 # --- Routing logic ---
 
 def _route_after_router(state: AgentState) -> str:
-    """Conditional edge: skip researcher for interactive tasks."""
+    """Conditional edge: interactive skips planner and goes straight to researcher.
+    Content/feedback go through planner first for strategic guidance."""
     if state.task_type == "interactive":
-        return "writer"
-    return "researcher"
+        return "researcher"
+    return "planner"
 
 
 def _route_after_writer(state: AgentState) -> str:
-    """Conditional edge: skip publisher for interactive tasks."""
+    """Conditional edge: interactive skips approval+analyzer, content goes to approval."""
     if state.task_type == "interactive":
-        return "reporter"
+        return END
     return "approval"
 
 
@@ -50,7 +58,7 @@ def approve(state: AgentState) -> AgentState:
     The operator can:
     - approve: continue to publisher as-is
     - edit: update the draft, then continue to publisher
-    - reject: skip publisher, go straight to reporter
+    - reject: skip publisher, go straight to analyzer
     """
     decision = interrupt({
         "task": state.task,
@@ -85,60 +93,61 @@ def approve(state: AgentState) -> AgentState:
 def _route_after_approval(state: AgentState) -> str:
     """Skip publisher if draft was rejected."""
     if state.error and "rejected" in state.error.lower():
-        return "reporter"
+        return "analyzer"
     return "publisher"
 
 
 # --- Build graphs ---
 
 def _build_graph():
-    """Build the Bekku pipeline graph with conditional routing and HIL.
+    """Build the Bekku pipeline graph with learning loop, conditional routing, and HIL.
 
-    content/feedback: router → researcher → writer → ⏸ approval → publisher → reporter
-    interactive:      router → writer → reporter (no approval needed)
+    content/feedback: router → planner → researcher → writer → ⏸ approval → publisher → analyzer
+    interactive:      router → researcher (lightweight) → writer → END
     """
     graph = StateGraph(AgentState)
 
     # Nodes
     graph.add_node("router", route)
+    graph.add_node("planner", plan)
     graph.add_node("researcher", research)
     graph.add_node("writer", write)
     graph.add_node("approval", approve)
     graph.add_node("publisher", publish)
-    graph.add_node("reporter", report)
+    graph.add_node("analyzer", analyze)
 
-    # Entry
+    # Entry: router classifies first (cheap — one small LLM call)
     graph.set_entry_point("router")
 
-    # Conditional: router → researcher or writer
+    # Conditional: router → planner (content/feedback) or researcher (interactive)
     graph.add_conditional_edges(
         "router",
         _route_after_router,
-        {"researcher": "researcher", "writer": "writer"},
+        {"planner": "planner", "researcher": "researcher"},
     )
+
+    # planner → researcher
+    graph.add_edge("planner", "researcher")
 
     # researcher always → writer
     graph.add_edge("researcher", "writer")
 
-    # Conditional: writer → approval or reporter (interactive skips approval)
+    # Conditional: writer → approval (content/feedback) or END (interactive)
     graph.add_conditional_edges(
         "writer",
         _route_after_writer,
-        {"approval": "approval", "reporter": "reporter"},
+        {"approval": "approval", END: END},
     )
 
-    # Conditional: approval → publisher or reporter (rejected skips publish)
+    # Conditional: approval → publisher or analyzer (rejected skips publish)
     graph.add_conditional_edges(
         "approval",
         _route_after_approval,
-        {"publisher": "publisher", "reporter": "reporter"},
+        {"publisher": "publisher", "analyzer": "analyzer"},
     )
 
-    # publisher always → reporter
-    graph.add_edge("publisher", "reporter")
-
-    # Finish
-    graph.set_finish_point("reporter")
+    # publisher always → analyzer
+    graph.add_edge("publisher", "analyzer")
 
     return graph.compile()
 

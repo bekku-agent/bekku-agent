@@ -1,0 +1,48 @@
+name: "Bekku: Generate Content"
+
+on:
+  schedule:
+    # Run daily at 9am UTC (Mon-Fri)
+    - cron: "0 9 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "Specific task (leave empty for auto-pick from queue)"
+        required: false
+      batch:
+        description: "Number of tasks to run"
+        required: false
+        default: "1"
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate content draft
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+        run: |
+          if [ -n "${{ github.event.inputs.task }}" ]; then
+            python run_scheduled.py --task "${{ github.event.inputs.task }}"
+          else
+            python run_scheduled.py --batch ${{ github.event.inputs.batch || '1' }}
+          fi
+
+      - name: Commit schedule updates
+        run: |
+          git config user.name "Bekku Agent"
+          git config user.email "bekku-agent@users.noreply.github.com"
+          git add schedule.yaml skills/
+          git diff --cached --quiet || git commit -m "chore: update schedule and skills after content generation"
+          git push

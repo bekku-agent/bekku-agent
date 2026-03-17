@@ -9,7 +9,7 @@ from uuid import uuid4
 import streamlit as st
 from dotenv import load_dotenv
 from langgraph.checkpoint.memory import MemorySaver
-from langgraph.graph import StateGraph
+from langgraph.graph import END, StateGraph
 from langgraph.types import Command
 
 from src.graph import (
@@ -21,9 +21,11 @@ from src.graph import (
     research,
     write,
     publish,
-    report,
 )
+from src.nodes.analyzer import analyze
+from src.nodes.planner import plan
 from src.state import AgentState
+from src.tools.skills import log_engagement
 
 load_dotenv()
 
@@ -40,18 +42,19 @@ st.set_page_config(
 def get_graph():
     graph = StateGraph(AgentState)
     graph.add_node("router", route)
+    graph.add_node("planner", plan)
     graph.add_node("researcher", research)
     graph.add_node("writer", write)
     graph.add_node("approval", approve)
     graph.add_node("publisher", publish)
-    graph.add_node("reporter", report)
+    graph.add_node("analyzer", analyze)
     graph.set_entry_point("router")
-    graph.add_conditional_edges("router", _route_after_router, {"researcher": "researcher", "writer": "writer"})
+    graph.add_conditional_edges("router", _route_after_router, {"planner": "planner", "researcher": "researcher"})
+    graph.add_edge("planner", "researcher")
     graph.add_edge("researcher", "writer")
-    graph.add_conditional_edges("writer", _route_after_writer, {"approval": "approval", "reporter": "reporter"})
-    graph.add_conditional_edges("approval", _route_after_approval, {"publisher": "publisher", "reporter": "reporter"})
-    graph.add_edge("publisher", "reporter")
-    graph.set_finish_point("reporter")
+    graph.add_conditional_edges("writer", _route_after_writer, {"approval": "approval", END: END})
+    graph.add_conditional_edges("approval", _route_after_approval, {"publisher": "publisher", "analyzer": "analyzer"})
+    graph.add_edge("publisher", "analyzer")
     return graph.compile(checkpointer=MemorySaver())
 
 
@@ -131,24 +134,55 @@ if st.session_state.pending_approval is not None:
     st.header("Review & Approve")
     st.caption(f"{len(approval['draft'].split()):,} words · Publishing to GitHub Gist")
 
-    # Side-by-side: edit markdown on the left, live preview on the right
-    col_edit, col_preview = st.columns(2)
+    # Tabs: Article | Social Posts
+    tab_article, tab_social = st.tabs(["Article", "Social Posts"])
 
-    with col_edit:
-        st.markdown("**Edit**")
-        edited_draft = st.text_area(
-            "Markdown editor",
-            value=approval["draft"],
-            height=500,
-            key="draft_editor",
-            label_visibility="collapsed",
-        )
+    with tab_article:
+        # Side-by-side: edit markdown on the left, live preview on the right
+        col_edit, col_preview = st.columns(2)
 
-    with col_preview:
-        st.markdown("**Preview**")
-        preview_container = st.container(height=500, border=True)
-        with preview_container:
-            st.markdown(st.session_state.get("draft_editor", approval["draft"]))
+        with col_edit:
+            st.markdown("**Edit**")
+            edited_draft = st.text_area(
+                "Markdown editor",
+                value=approval["draft"],
+                height=500,
+                key="draft_editor",
+                label_visibility="collapsed",
+            )
+
+        with col_preview:
+            st.markdown("**Preview**")
+            preview_container = st.container(height=500, border=True)
+            with preview_container:
+                st.markdown(st.session_state.get("draft_editor", approval["draft"]))
+
+    with tab_social:
+        social = approval.get("social_posts", {})
+        if social:
+            st.caption("Copy these after publishing. [GIST_URL] will be replaced with the real link.")
+
+            if social.get("x"):
+                st.markdown("**X (Twitter)**")
+                st.text_area(
+                    "X post",
+                    value=social["x"],
+                    height=150,
+                    key="social_x_editor",
+                    label_visibility="collapsed",
+                )
+
+            if social.get("linkedin"):
+                st.markdown("**LinkedIn**")
+                st.text_area(
+                    "LinkedIn post",
+                    value=social["linkedin"],
+                    height=200,
+                    key="social_linkedin_editor",
+                    label_visibility="collapsed",
+                )
+        else:
+            st.info("No social posts generated for this task.")
 
     # Actions
     col1, col2, col3 = st.columns([2, 1, 1])
@@ -179,6 +213,20 @@ if st.session_state.pending_approval is not None:
             if url:
                 st.balloons()
                 st.success(f"Published! [Open Gist →]({url})")
+
+                # Show social posts with real URL filled in
+                social = approval.get("social_posts", {})
+                if social:
+                    st.divider()
+                    st.markdown("**Ready to post — copy below:**")
+                    if social.get("x"):
+                        x_text = st.session_state.get("social_x_editor", social["x"]).replace("[GIST_URL]", url)
+                        st.markdown("**X (Twitter)**")
+                        st.code(x_text, language=None)
+                    if social.get("linkedin"):
+                        li_text = st.session_state.get("social_linkedin_editor", social["linkedin"]).replace("[GIST_URL]", url)
+                        st.markdown("**LinkedIn**")
+                        st.code(li_text, language=None)
             else:
                 st.warning("Publish completed but no URL returned. Check `GITHUB_TOKEN`.")
             st.rerun()
@@ -249,6 +297,49 @@ else:
         key="task_area",
     )
 
+    # --- Engagement Tracking ---
+    published_runs = [r for r in st.session_state.runs if r.get("published_url")]
+    if published_runs:
+        with st.expander("Log LinkedIn Engagement"):
+            st.caption("Select a published piece and enter LinkedIn metrics to close the learning loop.")
+
+            run_labels = {
+                r["task"][:60]: r["published_url"] for r in published_runs
+            }
+            selected_label = st.selectbox(
+                "Published content",
+                options=list(run_labels.keys()),
+                key="engagement_select",
+            )
+            selected_url = run_labels.get(selected_label, "")
+
+            li_url = st.text_input("LinkedIn post URL", key="li_url")
+            col_i, col_l, col_c, col_s = st.columns(4)
+            with col_i:
+                impressions = st.number_input("Impressions", min_value=0, value=0, key="li_impressions")
+            with col_l:
+                likes = st.number_input("Likes", min_value=0, value=0, key="li_likes")
+            with col_c:
+                comments = st.number_input("Comments", min_value=0, value=0, key="li_comments")
+            with col_s:
+                shares = st.number_input("Shares", min_value=0, value=0, key="li_shares")
+
+            if st.button("Save Engagement", key="save_engagement"):
+                if selected_url and li_url:
+                    log_engagement(
+                        published_url=selected_url,
+                        linkedin_url=li_url,
+                        impressions=impressions,
+                        likes=likes,
+                        comments=comments,
+                        shares=shares,
+                    )
+                    st.success("Engagement logged! Planner will use this data in the next run.")
+                else:
+                    st.warning("Enter a LinkedIn URL first.")
+
+        st.divider()
+
     if st.button("🚀 Run", type="primary", disabled=not task):
         thread_id = str(uuid4())
         config = {"configurable": {"thread_id": thread_id}}
@@ -282,6 +373,7 @@ else:
                     "task": task,
                     "task_type": task_type,
                     "draft": state_values.get("draft", ""),
+                    "social_posts": state_values.get("social_posts", {}),
                     "sources": sources,
                     "research_context": state_values.get("research_context", ""),
                     "thread_id": thread_id,

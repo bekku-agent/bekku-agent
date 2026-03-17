@@ -110,8 +110,11 @@ async def _fetch_page(url: str) -> tuple[str, str]:
 
 
 async def research(state: AgentState) -> AgentState:
-    """Fetch RC docs, identify relevant pages, pull them, synthesize context."""
-    logger.info("researcher_start", task=state.task)
+    """Fetch RC docs, identify relevant pages, pull them, synthesize context.
+
+    For interactive tasks, uses a lightweight path (llms.txt only, no URL picking).
+    """
+    logger.info("researcher_start", task=state.task, task_type=state.task_type)
 
     # 1. Fetch llms.txt index
     try:
@@ -120,6 +123,13 @@ async def research(state: AgentState) -> AgentState:
         logger.error("llms_txt_fetch_failed", error=str(e))
         state.research_context = f"[Research failed: could not fetch llms.txt — {e}]"
         state.error = str(e)
+        return state
+
+    # Lightweight path for interactive tasks — just use llms.txt overview
+    if state.task_type == "interactive":
+        state.research_context = f"## llms.txt overview (first 4000 chars)\n\n{llms_txt[:4000]}"
+        state.sources = [get_docs_url()]
+        logger.info("researcher_done_lightweight", sources=1, context_len=len(state.research_context))
         return state
 
     # 2. Extract URLs and pick relevant ones
