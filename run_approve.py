@@ -31,11 +31,10 @@ def get_repo():
 
 
 def extract_draft_from_issue(body: str) -> str:
-    """Extract the draft markdown from the issue body (between the --- markers)."""
-    parts = body.split("---")
-    if len(parts) >= 3:
-        # The draft is between the first and second --- after the metadata
-        return parts[2].strip()
+    """Extract the draft markdown from the issue body (between HTML comment markers)."""
+    match = re.search(r"<!-- DRAFT_START -->\s*(.*?)\s*<!-- DRAFT_END -->", body, re.DOTALL)
+    if match:
+        return match.group(1).strip()
     return body
 
 
