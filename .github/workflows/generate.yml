@@ -30,7 +30,7 @@ jobs:
       - name: Generate content draft
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_REPO: ${{ github.repository }}
         run: |
           if [ -n "${{ github.event.inputs.task }}" ]; then
