@@ -78,15 +78,15 @@ def create_review_issue(result: dict) -> str:
     social = result["social_posts"]
     sources = result["sources"]
 
-    # Build issue body
+    # Build issue body — use unique markers so we can extract the draft later
     body_parts = [
         "## Draft for Review\n",
         f"**Task:** {task}\n",
         f"**Type:** {result['task_type']}\n",
         f"**Sources:** {len(sources)}\n",
-        "---\n",
+        "<!-- DRAFT_START -->\n",
         draft,
-        "\n---\n",
+        "\n<!-- DRAFT_END -->\n",
     ]
 
     if social:
