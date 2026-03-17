@@ -8,6 +8,7 @@ jobs:
   handle-comment:
     # Only run on Bekku draft issues, only for repo owner
     if: |
+      github.event.issue.state == 'open' &&
       contains(github.event.issue.labels.*.name, 'bekku-draft') &&
       github.event.comment.user.login == github.repository_owner
     runs-on: ubuntu-latest
@@ -67,22 +68,24 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GH_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_REPO: ${{ github.repository }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
           python run_approve.py \
             --issue ${{ github.event.issue.number }} \
             --action edit \
-            --draft "${{ github.event.comment.body }}"
+            --draft "$COMMENT_BODY"
 
       - name: Handle engagement
         if: steps.parse.outputs.action == 'engagement'
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_REPO: ${{ github.repository }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
           python run_approve.py \
             --issue ${{ github.event.issue.number }} \
             --action engagement \
-            --comment "${{ github.event.comment.body }}"
+            --comment "$COMMENT_BODY"
 
       - name: Commit skill updates
         if: always()
