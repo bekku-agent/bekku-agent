@@ -111,13 +111,19 @@ async def handle_approve(issue_number: int, action: str, edited_draft: str | Non
     # Run analyzer to log outcome
     await analyze(state)
 
-    # Build comment with social posts (URL filled in)
+    # Build comment with published article + social posts (URL filled in)
+    from src.nodes.publisher import _extract_title_and_body
+    _, clean_body = _extract_title_and_body(draft)
+
     comment_parts = [
         f"Published! {state.published_url}\n",
+        "---\n",
+        clean_body,
+        "\n---\n",
     ]
 
     if social:
-        comment_parts.append("---\n**Social posts ready to copy:**\n")
+        comment_parts.append("**Social posts ready to copy:**\n")
         if social.get("x"):
             x_text = social["x"].replace("[GIST_URL]", state.published_url)
             comment_parts.append(f"**X (Twitter)**\n```\n{x_text}\n```\n")
