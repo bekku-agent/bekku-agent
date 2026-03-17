@@ -23,6 +23,33 @@ _PROMPT_FILES = {
 }
 
 
+def _parse_social_posts(raw: str) -> dict[str, str]:
+    """Parse social post section into {platform: text} dict."""
+    posts = {}
+    current_key = None
+    current_lines: list[str] = []
+
+    for line in raw.splitlines():
+        line_lower = line.strip().lower()
+        if line_lower.startswith("**x (") or line_lower.startswith("**x:**") or "tweet" in line_lower and line.startswith("**"):
+            if current_key and current_lines:
+                posts[current_key] = "\n".join(current_lines).strip()
+            current_key = "x"
+            current_lines = []
+        elif line_lower.startswith("**linkedin"):
+            if current_key and current_lines:
+                posts[current_key] = "\n".join(current_lines).strip()
+            current_key = "linkedin"
+            current_lines = []
+        elif current_key:
+            current_lines.append(line)
+
+    if current_key and current_lines:
+        posts[current_key] = "\n".join(current_lines).strip()
+
+    return posts
+
+
 def _load_system_prompt(task_type: str) -> str:
     """Load the appropriate system prompt for the task type."""
     filename = _PROMPT_FILES.get(task_type, "writer.md")
@@ -57,6 +84,9 @@ async def write(state: AgentState) -> AgentState:
             f"**About You (Bekku) — use this to write as yourself, with real details:**\n\n"
             f"{bekku_context}"
         )
+
+    if state.plan:
+        parts.append(f"**Strategic Plan (from Planner):**\n\n{state.plan}")
 
     if state.research_context:
         parts.append(f"**Research Context:**\n\n{state.research_context}")
@@ -95,6 +125,14 @@ async def write(state: AgentState) -> AgentState:
             draft = draft[len("```md"):].strip()
             if draft.endswith("```"):
                 draft = draft[:-3].strip()
+
+        # Split off social posts if the writer included them
+        if "---SOCIAL---" in draft:
+            article, social_raw = draft.split("---SOCIAL---", 1)
+            draft = article.strip()
+            state.social_posts = _parse_social_posts(social_raw.strip())
+        else:
+            state.social_posts = {}
 
         # Fix unclosed code fences — count ``` occurrences, add closing if odd
         fence_count = draft.count("```")
