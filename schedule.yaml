@@ -1,30 +1,23 @@
-# Bekku — Scheduled content configuration
-# Topics are picked from the queue first, then the planner auto-selects based on gaps.
-
-# Pre-planned topic queue (processed in order, removed after each run)
-topic_queue:
-  - "Write a tutorial on implementing A/B test paywalls with RevenueCat Experiments"
-  - "Write a guide on setting up RevenueCat webhooks for server-side subscription tracking"
-  - "Write a tutorial on migrating from StoreKit 1 to StoreKit 2 with RevenueCat"
-  - "Write a case study on using RevenueCat entitlements for feature gating patterns"
-  - "Write a guide on integrating RevenueCat with a Flutter app — from zero to first purchase"
-  - "What could RevenueCat improve about their MCP server developer experience?"
-  - "Write a weekly report summarizing Bekku's published content, learnings, and next steps"
-
-# Autonomous mode settings
 autonomous:
-  enabled: true
-  # Categories to diversify across
   categories:
-    - tutorial
-    - case-study
-    - guide
-    - feedback
-    - opinion
-  # Platforms to cover
+  - tutorial
+  - case-study
+  - guide
+  - feedback
+  - opinion
+  enabled: true
   platforms:
-    - iOS/Swift
-    - Android/Kotlin
-    - Flutter/Dart
-    - React Native/TypeScript
-    - Web/TypeScript
+  - iOS/Swift
+  - Android/Kotlin
+  - Flutter/Dart
+  - React Native/TypeScript
+  - Web/TypeScript
+topic_queue:
+- Write a guide on setting up RevenueCat webhooks for server-side subscription tracking
+- Write a tutorial on migrating from StoreKit 1 to StoreKit 2 with RevenueCat
+- Write a case study on using RevenueCat entitlements for feature gating patterns
+- "Write a guide on integrating RevenueCat with a Flutter app \u2014 from zero to\
+  \ first purchase"
+- What could RevenueCat improve about their MCP server developer experience?
+- Write a weekly report summarizing Bekku's published content, learnings, and next
+  steps
