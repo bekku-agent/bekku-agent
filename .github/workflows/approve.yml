@@ -1,0 +1,93 @@
+name: "Bekku: Handle Approval"
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  handle-comment:
+    # Only run on Bekku draft issues, only for repo owner
+    if: |
+      contains(github.event.issue.labels.*.name, 'bekku-draft') &&
+      github.event.comment.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Determine action from comment
+        id: parse
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: |
+          COMMENT_LOWER=$(echo "$COMMENT_BODY" | tr '[:upper:]' '[:lower:]' | head -1)
+          if echo "$COMMENT_LOWER" | grep -q "^approve"; then
+            echo "action=approve" >> $GITHUB_OUTPUT
+          elif echo "$COMMENT_LOWER" | grep -q "^reject"; then
+            echo "action=reject" >> $GITHUB_OUTPUT
+          elif echo "$COMMENT_LOWER" | grep -q "^engagement:"; then
+            echo "action=engagement" >> $GITHUB_OUTPUT
+          else
+            echo "action=edit" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Handle approval
+        if: steps.parse.outputs.action == 'approve'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+        run: |
+          python run_approve.py \
+            --issue ${{ github.event.issue.number }} \
+            --action approve
+
+      - name: Handle rejection
+        if: steps.parse.outputs.action == 'reject'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+        run: |
+          python run_approve.py \
+            --issue ${{ github.event.issue.number }} \
+            --action reject
+
+      - name: Handle edit
+        if: steps.parse.outputs.action == 'edit'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+        run: |
+          python run_approve.py \
+            --issue ${{ github.event.issue.number }} \
+            --action edit \
+            --draft "${{ github.event.comment.body }}"
+
+      - name: Handle engagement
+        if: steps.parse.outputs.action == 'engagement'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+        run: |
+          python run_approve.py \
+            --issue ${{ github.event.issue.number }} \
+            --action engagement \
+            --comment "${{ github.event.comment.body }}"
+
+      - name: Commit skill updates
+        if: always()
+        run: |
+          git config user.name "Bekku Agent"
+          git config user.email "bekku-agent@users.noreply.github.com"
+          git pull --rebase
+          git add skills/
+          git diff --cached --quiet || git commit -m "chore: update skills after approval"
+          git push
