@@ -41,7 +41,7 @@ jobs:
         if: steps.parse.outputs.action == 'approve'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_REPO: ${{ github.repository }}
         run: |
           python run_approve.py \
@@ -52,7 +52,7 @@ jobs:
         if: steps.parse.outputs.action == 'reject'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_REPO: ${{ github.repository }}
         run: |
           python run_approve.py \
@@ -63,7 +63,7 @@ jobs:
         if: steps.parse.outputs.action == 'edit'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_REPO: ${{ github.repository }}
         run: |
           python run_approve.py \
@@ -74,7 +74,7 @@ jobs:
       - name: Handle engagement
         if: steps.parse.outputs.action == 'engagement'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_REPO: ${{ github.repository }}
         run: |
           python run_approve.py \

@@ -67,7 +67,7 @@ async def generate_draft(task: str) -> dict:
 
 def create_review_issue(result: dict) -> str:
     """Create a GitHub Issue with the draft for MK to review."""
-    token = os.environ["GITHUB_TOKEN"]
+    token = os.environ.get("GH_TOKEN") or os.environ["GITHUB_TOKEN"]
     repo_name = os.environ.get("GITHUB_REPO", "bekku-agent/bekku-agent")
 
     gh = Github(token)

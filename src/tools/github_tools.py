@@ -12,7 +12,7 @@ logger = structlog.get_logger()
 
 def get_github_client() -> Github:
     """Create an authenticated GitHub client."""
-    token = os.environ["GITHUB_TOKEN"]
+    token = os.environ.get("GH_TOKEN") or os.environ["GITHUB_TOKEN"]
     return Github(token)
 
 
