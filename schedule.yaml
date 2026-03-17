@@ -13,7 +13,6 @@ autonomous:
   - React Native/TypeScript
   - Web/TypeScript
 topic_queue:
-- Write a case study on using RevenueCat entitlements for feature gating patterns
 - "Write a guide on integrating RevenueCat with a Flutter app \u2014 from zero to\
   \ first purchase"
 - What could RevenueCat improve about their MCP server developer experience?
