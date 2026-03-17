@@ -8,6 +8,7 @@ jobs:
   handle-comment:
     # Only run on Bekku draft issues, only for repo owner
     if: |
+      github.event.issue.state == 'open' &&
       contains(github.event.issue.labels.*.name, 'bekku-draft') &&
       github.event.comment.user.login == github.repository_owner
     runs-on: ubuntu-latest

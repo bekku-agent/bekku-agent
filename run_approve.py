@@ -82,8 +82,14 @@ async def handle_approve(issue_number: int, action: str, edited_draft: str | Non
         await analyze(state)
 
         issue.create_comment("Draft rejected. Logged to failure-log.md for learning.")
-        issue.remove_from_labels("awaiting-review")
-        issue.add_to_labels("rejected")
+        try:
+            issue.remove_from_labels("awaiting-review")
+        except Exception:
+            pass
+        try:
+            issue.add_to_labels("rejected")
+        except Exception:
+            pass
         issue.edit(state="closed")
         print(f"Issue #{issue_number} rejected and closed.")
         return
@@ -127,8 +133,14 @@ async def handle_approve(issue_number: int, action: str, edited_draft: str | Non
     )
 
     issue.create_comment("\n".join(comment_parts))
-    issue.remove_from_labels("awaiting-review")
-    issue.add_to_labels("published")
+    try:
+        issue.remove_from_labels("awaiting-review")
+    except Exception:
+        pass
+    try:
+        issue.add_to_labels("published")
+    except Exception:
+        pass
     issue.edit(state="closed")
     print(f"Issue #{issue_number} published: {state.published_url}")
 
