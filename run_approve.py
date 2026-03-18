@@ -69,6 +69,8 @@ async def handle_approve(issue_number: int, action: str, edited_draft: str | Non
     task = extract_task_from_issue(issue.title)
     draft = edited_draft or extract_draft_from_issue(issue.body)
     social = extract_social_from_issue(issue.body)
+    print(f"  Draft length: {len(draft)}")
+    print(f"  Social posts found: {list(social.keys()) if social else 'none'}")
 
     if action == "reject":
         # Log rejection and close
