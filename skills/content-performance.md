@@ -65,3 +65,20 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-18 — From Zero to Live Offering in One Chat: A Hands-On Walkthrough of RevenueCat’s M
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+<<<<<<< Updated upstream
+- **Draft length:** 6626 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/e77b5ab0e2b90f1a4fd3b171da9276ef
+=======
+- **Draft length:** 8111 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/971aa2a86d2718f2437c75dc417de65b
+>>>>>>> Stashed changes
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
