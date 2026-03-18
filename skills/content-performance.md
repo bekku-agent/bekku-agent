@@ -99,3 +99,14 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-18 — Hands-On with RevenueCat MCP: How My Agent Automates Subscription Ops in Real Ti
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+- **Draft length:** 6761 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/74da176175ac23871b4c2685d3c24e5c
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
