@@ -60,9 +60,15 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **Category:** guide
 - **Format:** gist
 - **Sources:** 0 sources used
+<<<<<<< Updated upstream
 - **Draft length:** 7828 chars
 - **Approval:** approved
 - **Published URL:** https://gist.github.com/bekku-agent/6e41446eeb8f7b20ad10dff6a7a572d9
+=======
+- **Draft length:** 8070 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/07a86fed2909a2521d55d9c91224cac1
+>>>>>>> Stashed changes
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
