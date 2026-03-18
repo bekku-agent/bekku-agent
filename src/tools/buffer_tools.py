@@ -44,6 +44,7 @@ async def get_channels() -> list[dict]:
             },
             json={"query": query},
         )
+        logger.info("buffer_channels_response", status=resp.status_code, body=resp.text[:500])
         resp.raise_for_status()
         data = resp.json()
 
@@ -96,6 +97,7 @@ async def create_draft(channel_id: str, text: str) -> dict | None:
             },
             json={"query": query, "variables": variables},
         )
+        logger.info("buffer_create_response", status=resp.status_code, body=resp.text[:500])
         resp.raise_for_status()
         data = resp.json()
 
@@ -125,7 +127,11 @@ async def distribute_social(social_posts: dict[str, str], published_url: str) ->
         return []
 
     # Get connected channels
-    channels = await get_channels()
+    try:
+        channels = await get_channels()
+    except Exception as e:
+        logger.error("buffer_channels_error", error=str(e))
+        return []
     if not channels:
         logger.warning("buffer_no_channels")
         return []
