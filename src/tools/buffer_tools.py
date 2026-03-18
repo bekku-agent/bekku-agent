@@ -101,7 +101,7 @@ async def create_draft(channel_id: str, text: str) -> dict | None:
             "text": text,
             "channelId": channel_id,
             "schedulingType": "automatic",
-            "mode": "queue",
+            "mode": "addToQueue",
         }
     })
 
