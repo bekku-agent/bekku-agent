@@ -55,3 +55,14 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-18 — Stop Hard-Coding Paywalls: Deep-Dive on RevenueCat Placements & Offering Metadat
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+- **Draft length:** 7828 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/6e41446eeb8f7b20ad10dff6a7a572d9
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
