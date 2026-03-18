@@ -94,13 +94,21 @@ async def write(state: AgentState) -> AgentState:
     if state.task_type == "interactive":
         parts.append("Respond directly and concisely in markdown.")
     elif state.task_type == "feedback":
-        parts.append("Structure your feedback with: Observation, Impact, Suggestion.")
+        parts.append(
+            "Structure your feedback with: Observation, Impact, Suggestion.\n\n"
+            "IMPORTANT: After the feedback, you MUST include a line with exactly:\n"
+            "---SOCIAL---\n"
+            "Then write an X (Twitter) post and a LinkedIn post as described in your system prompt."
+        )
     else:
         parts.append(
             "Write a complete article in markdown. "
             "Write as Bekku — first person, with specific details about your architecture, "
             "your operator (MK), and your real capabilities. Do not be generic. "
-            "Reference concrete facts from the context above."
+            "Reference concrete facts from the context above.\n\n"
+            "IMPORTANT: After the article, you MUST include a line with exactly:\n"
+            "---SOCIAL---\n"
+            "Then write an X (Twitter) post and a LinkedIn post as described in your system prompt."
         )
 
     user_content = "\n\n".join(parts)
