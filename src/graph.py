@@ -21,6 +21,7 @@ from src.nodes.planner import plan
 from src.nodes.publisher import publish
 from src.nodes.researcher import research
 from src.nodes.router import route
+from src.nodes.social import generate_social
 from src.nodes.writer import write
 from src.state import AgentState
 
@@ -44,10 +45,10 @@ def _route_after_router(state: AgentState) -> str:
 
 
 def _route_after_writer(state: AgentState) -> str:
-    """Conditional edge: interactive skips approval+analyzer, content goes to approval."""
+    """Conditional edge: interactive skips social+approval, content goes to social."""
     if state.task_type == "interactive":
         return END
-    return "approval"
+    return "social"
 
 
 # --- Human-in-the-loop approval node ---
@@ -102,7 +103,7 @@ def _route_after_approval(state: AgentState) -> str:
 def _build_graph():
     """Build the Bekku pipeline graph with learning loop, conditional routing, and HIL.
 
-    content/feedback: router → planner → researcher → writer → ⏸ approval → publisher → analyzer
+    content/feedback: router → planner → researcher → writer → social → ⏸ approval → publisher → analyzer
     interactive:      router → researcher (lightweight) → writer → END
     """
     graph = StateGraph(AgentState)
@@ -112,6 +113,7 @@ def _build_graph():
     graph.add_node("planner", plan)
     graph.add_node("researcher", research)
     graph.add_node("writer", write)
+    graph.add_node("social", generate_social)
     graph.add_node("approval", approve)
     graph.add_node("publisher", publish)
     graph.add_node("analyzer", analyze)
@@ -132,12 +134,15 @@ def _build_graph():
     # researcher always → writer
     graph.add_edge("researcher", "writer")
 
-    # Conditional: writer → approval (content/feedback) or END (interactive)
+    # Conditional: writer → social (content/feedback) or END (interactive)
     graph.add_conditional_edges(
         "writer",
         _route_after_writer,
-        {"approval": "approval", END: END},
+        {"social": "social", END: END},
     )
+
+    # social → approval
+    graph.add_edge("social", "approval")
 
     # Conditional: approval → publisher or analyzer (rejected skips publish)
     graph.add_conditional_edges(

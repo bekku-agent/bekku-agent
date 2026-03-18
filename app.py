@@ -24,6 +24,7 @@ from src.graph import (
 )
 from src.nodes.analyzer import analyze
 from src.nodes.planner import plan
+from src.nodes.social import generate_social
 from src.state import AgentState
 from src.tools.skills import log_engagement
 
@@ -45,6 +46,7 @@ def get_graph():
     graph.add_node("planner", plan)
     graph.add_node("researcher", research)
     graph.add_node("writer", write)
+    graph.add_node("social", generate_social)
     graph.add_node("approval", approve)
     graph.add_node("publisher", publish)
     graph.add_node("analyzer", analyze)
@@ -52,7 +54,8 @@ def get_graph():
     graph.add_conditional_edges("router", _route_after_router, {"planner": "planner", "researcher": "researcher"})
     graph.add_edge("planner", "researcher")
     graph.add_edge("researcher", "writer")
-    graph.add_conditional_edges("writer", _route_after_writer, {"approval": "approval", END: END})
+    graph.add_conditional_edges("writer", _route_after_writer, {"social": "social", END: END})
+    graph.add_edge("social", "approval")
     graph.add_conditional_edges("approval", _route_after_approval, {"publisher": "publisher", "analyzer": "analyzer"})
     graph.add_edge("publisher", "analyzer")
     return graph.compile(checkpointer=MemorySaver())

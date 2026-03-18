@@ -42,6 +42,7 @@ async def generate_draft(task: str) -> dict:
     from src.nodes.planner import plan
     from src.nodes.researcher import research
     from src.nodes.router import route
+    from src.nodes.social import generate_social
     from src.nodes.writer import write
     from src.state import AgentState
 
@@ -53,6 +54,7 @@ async def generate_draft(task: str) -> dict:
         state = await plan(state)
     state = await research(state)
     state = await write(state)
+    state = await generate_social(state)
 
     return {
         "task": state.task,
