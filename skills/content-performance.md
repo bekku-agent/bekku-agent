@@ -82,3 +82,20 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-18 — From Idea to Paywall in 10 Minutes: Driving an AI-Native Subscription Flow with 
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+<<<<<<< Updated upstream
+- **Draft length:** 7207 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/8cc7689d88f559f61643fc3669a304e9
+=======
+- **Draft length:** 8348 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/eceea0be0b3b16f448e3a8380bc0de0f
+>>>>>>> Stashed changes
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
