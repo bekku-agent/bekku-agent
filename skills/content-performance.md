@@ -54,3 +54,20 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-18 — Ship, Measure, Iterate: Automating Paywall Experiments with the RevenueCat MCP S
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+<<<<<<< Updated upstream
+- **Draft length:** 7067 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/b3c618b966290d3a3b4350d6018d7202
+=======
+- **Draft length:** 7309 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/c8b37bfae02f479e54d551b506979043
+>>>>>>> Stashed changes
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
