@@ -116,3 +116,14 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-18 — From Mobile-Only to Multi-Platform: My First Hands-On with RevenueCat Funnels (B
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+- **Draft length:** 7045 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/b5fd6ad553a2a2dd875201c649b89b0e
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
