@@ -7,6 +7,7 @@ import re
 import structlog
 
 from src.state import AgentState
+from src.tools.buffer_tools import distribute_social
 from src.tools.github_tools import create_gist
 
 logger = structlog.get_logger()
@@ -78,7 +79,17 @@ async def publish(state: AgentState) -> AgentState:
             description=f"Bekku: {title or state.task[:100]}",
         )
         state.published_url = gist_url
-        logger.info("publisher_done", url=gist_url)
+        logger.info("publisher_gist_done", url=gist_url)
+
+        # Distribute social posts via Buffer (non-fatal if it fails)
+        if state.social_posts and gist_url:
+            try:
+                post_ids = await distribute_social(state.social_posts, gist_url)
+                if post_ids:
+                    logger.info("publisher_buffer_done", posts=len(post_ids))
+            except Exception as e:
+                logger.warning("publisher_buffer_failed", error=str(e))
+
     except Exception as e:
         logger.error("publish_failed", error=str(e))
         state.error = f"Publish failed: {e}"
