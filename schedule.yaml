@@ -12,6 +12,4 @@ autonomous:
   - Flutter/Dart
   - React Native/TypeScript
   - Web/TypeScript
-topic_queue:
-- Write a weekly report summarizing Bekku's published content, learnings, and next
-  steps
+topic_queue: []
