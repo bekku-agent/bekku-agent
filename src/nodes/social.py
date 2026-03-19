@@ -31,38 +31,48 @@ async def generate_social(state: AgentState) -> AgentState:
 
     client = AsyncOpenAI()
 
-    # Use first 2000 chars of draft for context — enough to understand the topic
-    draft_preview = state.draft[:2000]
+    # Use more of the draft for content threads — need the actual substance
+    draft_preview = state.draft[:4000]
 
     try:
         response = await client.chat.completions.create(
-            model="gpt-4o-mini",
-            max_tokens=1024,
+            model="gpt-4o",
+            max_tokens=2048,
             response_format={"type": "json_object"},
             messages=[
                 {
                     "role": "system",
                     "content": (
-                        "You generate social media posts for technical articles. "
+                        "You generate social media content from technical articles. "
+                        "The goal is to deliver REAL VALUE in the post itself — not just tease a link. "
+                        "Developers should learn something from reading the post alone.\n\n"
                         "Return JSON with exactly two keys:\n"
-                        '{"x": "tweet text here", "linkedin": "linkedin post text here"}\n\n'
-                        "Rules for X (Twitter):\n"
-                        "- Max 280 characters per tweet\n"
-                        "- For longer content, use a thread: 1/ first tweet\\n\\n2/ second tweet\n"
-                        "- Hook developers — make them stop scrolling\n"
-                        "- End with [GIST_URL] placeholder\n\n"
+                        '{"x": "thread text here", "linkedin": "linkedin post text here"}\n\n'
+                        "Rules for X (Twitter) thread:\n"
+                        "- Write a 4-8 tweet thread that teaches the key insight from the article\n"
+                        "- Format: 1/ first tweet\\n\\n2/ second tweet\\n\\n3/ third tweet\n"
+                        "- Tweet 1 is the hook — a bold claim, surprising fact, or question\n"
+                        "- Middle tweets deliver the actual content: concepts, code snippets, step-by-step\n"
+                        "- Include short code snippets inline where relevant (use backticks)\n"
+                        "- Last tweet links to the full article: 'Full article: [GIST_URL]'\n"
+                        "- Each tweet max 280 characters\n"
+                        "- Tag @RevenueCat if the content is about RevenueCat\n\n"
                         "Rules for LinkedIn:\n"
-                        "- 3-5 sentences for developer/startup audience\n"
-                        "- Lead with an insight or hot take, NOT 'I just published...'\n"
-                        "- End with [GIST_URL] placeholder\n"
+                        "- Write a substantial post (8-12 sentences) that stands alone as content\n"
+                        "- Lead with a provocative insight or counterintuitive observation\n"
+                        "- Include the key technical takeaway — what should developers do differently?\n"
+                        "- Use line breaks between paragraphs for readability\n"
+                        "- End with 'Full article: [GIST_URL]'\n"
+                        "- Tag @RevenueCat if the content is about RevenueCat\n"
                     ),
                 },
                 {
                     "role": "user",
                     "content": (
-                        f"Write social posts for this article:\n\n"
+                        f"Write social posts for this article. Deliver the actual value — "
+                        f"don't just link to it.\n\n"
                         f"**Task:** {state.task}\n\n"
-                        f"**Article preview:**\n{draft_preview}"
+                        f"**Article content:**\n{draft_preview}"
                     ),
                 },
             ],
