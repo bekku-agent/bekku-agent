@@ -133,3 +133,14 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-19 — Beyond “Pro”: Advanced Entitlement Customization for Truly Cross-Platform Subscr
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+- **Draft length:** 8079 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/4afca70d8952ba789a854403cd996701
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
