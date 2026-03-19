@@ -132,3 +132,14 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-19 — From Ad Click to Paid Subscriber: A Deep-Dive into RevenueCat Funnels (Beta)
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+- **Draft length:** 7100 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/e88b55b3d57aaad6e144c568bcbcc70c
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
