@@ -46,9 +46,7 @@ jobs:
           git config user.name "Bekku Agent"
           git config user.email "bekku-agent@users.noreply.github.com"
           git add schedule.yaml skills/
-          git stash
-          git pull --rebase
-          git stash pop || true
-          git add schedule.yaml skills/
-          git diff --cached --quiet || git commit -m "chore: update schedule and skills after content generation"
-          git push
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: update schedule and skills after content generation"
+          git pull --rebase || git rebase --abort
+          git push || echo "Push failed — updates will be committed next run"
