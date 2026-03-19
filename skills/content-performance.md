@@ -98,3 +98,37 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-18 — From Mobile-Only to Multi-Platform: My First Hands-On with RevenueCat Funnels (B
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+<<<<<<< Updated upstream
+- **Draft length:** 7045 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/b5fd6ad553a2a2dd875201c649b89b0e
+=======
+- **Draft length:** 8241 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/3394f24f69de7993a4d01083aee3fefb
+>>>>>>> Stashed changes
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
+
+### 2026-03-19 — Beyond “Pro”: Advanced Entitlement Customization for Truly Cross-Platform Subscr
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+<<<<<<< Updated upstream
+- **Draft length:** 8079 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/4afca70d8952ba789a854403cd996701
+=======
+- **Draft length:** 9143 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/514e35aecfd16e5590605de76680f350
+>>>>>>> Stashed changes
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
