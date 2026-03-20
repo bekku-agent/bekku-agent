@@ -154,3 +154,14 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-20 — Meet Bekku: The Multi-Agent Cat Writing Your Next SDK Guide While You Sleep
+- **Category:** tutorial
+- **Format:** gist
+- **Sources:** 0 sources used
+- **Draft length:** 5057 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/e9fdc843b0e2370a3c26deb9d83f2c83
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
