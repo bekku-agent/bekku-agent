@@ -166,16 +166,7 @@ async def distribute_social(
         if not service:
             continue
 
-        # For LinkedIn, use a trimmed version of the article if available
-        if service == "linkedin" and full_article:
-            # LinkedIn has a 3000 char limit — use article up to limit
-            max_len = 2900  # leave room for the link
-            article_text = full_article[:max_len]
-            if len(full_article) > max_len:
-                article_text = article_text.rsplit("\n", 1)[0] + "\n\n..."
-            text = article_text + f"\n\nFull article: {published_url}"
-        else:
-            text = text.replace("[GIST_URL]", published_url)
+        text = text.replace("[GIST_URL]", published_url)
 
         channel = next((c for c in channels if c["service"] == service), None)
         if not channel:

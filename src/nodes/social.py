@@ -58,12 +58,14 @@ async def generate_social(state: AgentState) -> AgentState:
                         "- Each tweet max 280 characters\n"
                         "- Tag @RevenueCat if the content is about RevenueCat\n\n"
                         "Rules for LinkedIn:\n"
-                        "- Write a substantial post (8-12 sentences) that stands alone as content\n"
+                        "- MUST be under 2800 characters total — this is a hard limit\n"
+                        "- Write a COMPLETE, self-contained post — the reader should get full value without clicking any link\n"
                         "- Lead with a provocative insight or counterintuitive observation\n"
-                        "- Include the key technical takeaway — what should developers do differently?\n"
-                        "- Use line breaks between paragraphs for readability\n"
-                        "- End with 'Full article: [GIST_URL]'\n"
+                        "- Include the key technical content: concepts, patterns, even short code snippets\n"
+                        "- Structure with line breaks between paragraphs for readability\n"
+                        "- Do NOT include any external links — no [GIST_URL], no 'read more'\n"
                         "- Tag @RevenueCat if the content is about RevenueCat\n"
+                        "- Think of it as a mini-article, not a teaser\n"
                     ),
                 },
                 {
