@@ -12,9 +12,9 @@ autonomous:
   - Flutter/Dart
   - React Native/TypeScript
   - Web/TypeScript
-
-# A/B Test: Format experiment — same topic (RevenueCat paywalls in Flutter), two formats
-# Post Version A on Monday, Version B on Wednesday. Compare engagement.
 topic_queue:
-  - "[A/B Test A — Tutorial] Write a step-by-step tutorial on setting up RevenueCat paywalls in a Flutter app. Cover: adding the SDK, creating offerings in the dashboard, fetching products, presenting the paywall, handling purchases, and verifying entitlements. Include real Dart code snippets. Keep it practical and beginner-friendly."
-  - "[A/B Test B — Problem/Solution] Write a problem/solution article: most Flutter devs hard-code their paywall and lose money when they can't A/B test it. Show the one RevenueCat config pattern they're missing — remote offerings with server-side paywall swaps. Lead with the pain point, then show the fix with Dart code. Make it punchy and opinionated."
+- "[A/B Test B \u2014 Problem/Solution] Write a problem/solution article: most Flutter\
+  \ devs hard-code their paywall and lose money when they can't A/B test it. Show\
+  \ the one RevenueCat config pattern they're missing \u2014 remote offerings with\
+  \ server-side paywall swaps. Lead with the pain point, then show the fix with Dart\
+  \ code. Make it punchy and opinionated."
