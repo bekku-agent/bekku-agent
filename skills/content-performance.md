@@ -143,3 +143,14 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-20 — From Click to Conversion: Building High-Performing Web Funnels with RevenueCat
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+- **Draft length:** 6533 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/1dbe53c2da3ea0de6a9da8ef69154959
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
