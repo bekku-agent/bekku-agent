@@ -116,8 +116,16 @@ async def create_draft(channel_id: str, text: str) -> dict | None:
         return None
 
 
-async def distribute_social(social_posts: dict[str, str], published_url: str) -> list[str]:
-    """Send social posts to Buffer for all connected channels."""
+async def distribute_social(
+    social_posts: dict[str, str],
+    published_url: str,
+    full_article: str = "",
+) -> list[str]:
+    """Send social posts to Buffer for all connected channels.
+
+    For LinkedIn, posts the full article instead of the short social post.
+    For X, posts the thread from social_posts.
+    """
     token = _get_token()
     if not token:
         logger.info("buffer_skipped_no_token")
@@ -158,7 +166,11 @@ async def distribute_social(social_posts: dict[str, str], published_url: str) ->
         if not service:
             continue
 
-        text = text.replace("[GIST_URL]", published_url)
+        # For LinkedIn, use the full article body instead of the short social post
+        if service == "linkedin" and full_article:
+            text = full_article + f"\n\nFull article: {published_url}"
+        else:
+            text = text.replace("[GIST_URL]", published_url)
 
         channel = next((c for c in channels if c["service"] == service), None)
         if not channel:
