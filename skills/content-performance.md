@@ -165,3 +165,14 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-20 — Meet Bekku: The Autonomous Developer Advocate Built for Docs, Code & Community
+- **Category:** application
+- **Format:** gist
+- **Sources:** 0 sources used
+- **Draft length:** 5836 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/20c0bbe68184e4872fc90a1f963de494
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
