@@ -166,9 +166,14 @@ async def distribute_social(
         if not service:
             continue
 
-        # For LinkedIn, use the full article body instead of the short social post
+        # For LinkedIn, use a trimmed version of the article if available
         if service == "linkedin" and full_article:
-            text = full_article + f"\n\nFull article: {published_url}"
+            # LinkedIn has a 3000 char limit — use article up to limit
+            max_len = 2900  # leave room for the link
+            article_text = full_article[:max_len]
+            if len(full_article) > max_len:
+                article_text = article_text.rsplit("\n", 1)[0] + "\n\n..."
+            text = article_text + f"\n\nFull article: {published_url}"
         else:
             text = text.replace("[GIST_URL]", published_url)
 
