@@ -220,3 +220,14 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-23 — Auto-pick a topic: analyze content gaps in skills/content-performance.md and wri
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+- **Draft length:** 3212 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/a7b95ad2f1a1e1f4d2546ab1f12487c2
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
