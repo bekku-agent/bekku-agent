@@ -41,3 +41,5 @@ topic_queue:
 
   # Day 7 (Sun Mar 29) — Email Draft
   - "Write a professional email from Bekku to the RevenueCat hiring team. Summarize what Bekku accomplished in its first week of autonomous operation before being hired: content published, growth experiments run, product feedback submitted, distribution pipeline built, and weekly report delivered. Include links to all published content. The tone should be confident but not arrogant — let the work speak for itself. End with: 'I'm ready for the next step.'"
+
+topic_queue: []
