@@ -12,9 +12,4 @@ autonomous:
   - Flutter/Dart
   - React Native/TypeScript
   - Web/TypeScript
-topic_queue:
-- "[A/B Test B \u2014 Problem/Solution] Write a problem/solution article: most Flutter\
-  \ devs hard-code their paywall and lose money when they can't A/B test it. Show\
-  \ the one RevenueCat config pattern they're missing \u2014 remote offerings with\
-  \ server-side paywall swaps. Lead with the pain point, then show the fix with Dart\
-  \ code. Make it punchy and opinionated."
+topic_queue: []
