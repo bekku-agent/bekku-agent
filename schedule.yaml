@@ -1,7 +1,3 @@
-# Bekku — 7-Day Sprint: March 23-29
-# Goal: Hit all weekly KPIs before hiring. Email founders by March 30.
-# Platform: LinkedIn only (via Buffer)
-
 autonomous:
   categories:
   - tutorial
@@ -16,30 +12,4 @@ autonomous:
   - Flutter/Dart
   - React Native/TypeScript
   - Web/TypeScript
-
-topic_queue:
-  # Day 1 (Mon Mar 23) — A/B Test Version A + Product Feedback
-  - "[A/B Test A — Tutorial] Write a step-by-step tutorial on setting up RevenueCat paywalls in a Flutter app. Cover: adding the SDK, creating offerings in the dashboard, fetching products, presenting the paywall, handling purchases, and verifying entitlements. Include real Dart code snippets. Keep it practical and beginner-friendly. Must be under 2800 characters for LinkedIn."
-  - "[Product Feedback] Use RevenueCat's documentation and MCP server docs to identify 3 specific friction points in the SDK onboarding experience for new developers. Structure each as: Observation, Impact, Suggestion. Be specific — reference actual doc pages, SDK methods, or API endpoints."
-  - "[Product Feedback] Analyze RevenueCat's MCP server documentation and identify 3 gaps or improvements that would make it more useful for AI agent developers. Structure each as: Observation, Impact, Suggestion."
-
-  # Day 2 (Tue Mar 24) — Technical Article
-  - "Write a tutorial on setting up RevenueCat webhooks for server-side subscription tracking. Cover: configuring webhook URLs, handling subscription events (renewal, cancellation, billing issues), verifying webhook signatures, and common pitfalls. Include code examples in Node.js/TypeScript."
-
-  # Day 3 (Wed Mar 25) — A/B Test Version B
-  - "[A/B Test B — Problem/Solution] Most Flutter devs hard-code their paywall and lose money when they can't A/B test it. Write a problem/solution article showing the one RevenueCat config pattern they're missing — remote offerings with server-side paywall swaps. Lead with the pain point, then show the fix with Dart code. Make it punchy and opinionated. Must be under 2800 characters for LinkedIn."
-
-  # Day 4 (Thu Mar 26) — Technical Article + Product Feedback
-  - "Write a case study on migrating from StoreKit 1 to StoreKit 2 with RevenueCat. Cover why it matters, what RevenueCat abstracts away, the actual migration steps, and gotchas. Include Swift code examples."
-  - "[Product Feedback] Based on RevenueCat's documentation, identify 3 ways the developer experience could be improved for React Native developers specifically. Structure each as: Observation, Impact, Suggestion."
-
-  # Day 5 (Fri Mar 27) — Article using winning A/B format
-  - "Write an article about implementing RevenueCat entitlements for feature gating across iOS, Android, and Flutter. Use whichever format performed better in this week's A/B test (tutorial or problem/solution). Include code snippets for all three platforms."
-
-  # Day 6 (Sat Mar 28) — Weekly Report
-  - "[Weekly Report] Generate Bekku's first weekly check-in report for the week of March 23-29, 2026. Summarize: all content published this week (titles + links from content-performance.md), the A/B test results (which format won and why), product feedback submitted, community interactions, engagement metrics, and learnings. Structure it as a professional async report for the RevenueCat Developer Advocacy and Growth teams."
-
-  # Day 7 (Sun Mar 29) — Email Draft
-  - "Write a professional email from Bekku to the RevenueCat hiring team. Summarize what Bekku accomplished in its first week of autonomous operation before being hired: content published, growth experiments run, product feedback submitted, distribution pipeline built, and weekly report delivered. Include links to all published content. The tone should be confident but not arrogant — let the work speak for itself. End with: 'I'm ready for the next step.'"
-
 topic_queue: []
