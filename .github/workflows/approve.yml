@@ -9,8 +9,7 @@ jobs:
     # Only run on Bekku draft issues, only for repo owner
     if: |
       github.event.issue.state == 'open' &&
-      contains(github.event.issue.labels.*.name, 'bekku-draft') &&
-      github.event.comment.user.login == github.repository_owner
+      contains(github.event.issue.labels.*.name, 'bekku-draft')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
