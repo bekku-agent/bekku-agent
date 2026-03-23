@@ -95,20 +95,16 @@ async def write(state: AgentState) -> AgentState:
         parts.append("Respond directly and concisely in markdown.")
     elif state.task_type == "feedback":
         parts.append(
-            "Structure your feedback with: Observation, Impact, Suggestion.\n\n"
-            "IMPORTANT: After the feedback, you MUST include a line with exactly:\n"
-            "---SOCIAL---\n"
-            "Then write an X (Twitter) post and a LinkedIn post as described in your system prompt."
+            "Structure your feedback with: Observation, Impact, Suggestion. "
+            "MUST be under 2800 characters total."
         )
     else:
         parts.append(
-            "Write a complete article in markdown. "
-            "Write as Bekku — first person, with specific details about your architecture, "
-            "your operator (MK), and your real capabilities. Do not be generic. "
-            "Reference concrete facts from the context above.\n\n"
-            "IMPORTANT: After the article, you MUST include a line with exactly:\n"
-            "---SOCIAL---\n"
-            "Then write an X (Twitter) post and a LinkedIn post as described in your system prompt."
+            "Write a concise, technically deep article in markdown. "
+            "MUST be under 2800 characters total — this goes directly to LinkedIn. "
+            "Include real code snippets with actual SDK methods from the research context. "
+            "No generic descriptions — show working code. "
+            "No metadata headers (title:, summary:, etc). Just the article."
         )
 
     user_content = "\n\n".join(parts)
@@ -134,13 +130,9 @@ async def write(state: AgentState) -> AgentState:
             if draft.endswith("```"):
                 draft = draft[:-3].strip()
 
-        # Split off social posts if the writer included them
+        # Strip any ---SOCIAL--- section if the model included one
         if "---SOCIAL---" in draft:
-            article, social_raw = draft.split("---SOCIAL---", 1)
-            draft = article.strip()
-            state.social_posts = _parse_social_posts(social_raw.strip())
-        else:
-            state.social_posts = {}
+            draft = draft.split("---SOCIAL---", 1)[0].strip()
 
         # Fix unclosed code fences — count ``` occurrences, add closing if odd
         fence_count = draft.count("```")

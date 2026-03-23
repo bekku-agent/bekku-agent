@@ -84,7 +84,7 @@ async def publish(state: AgentState) -> AgentState:
         # Distribute social posts via Buffer (non-fatal if it fails)
         if state.social_posts and gist_url:
             try:
-                post_ids = await distribute_social(state.social_posts, gist_url, full_article=clean_body)
+                post_ids = await distribute_social(state.social_posts, gist_url)
                 if post_ids:
                     logger.info("publisher_buffer_done", posts=len(post_ids))
             except Exception as e:

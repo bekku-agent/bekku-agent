@@ -119,13 +119,8 @@ async def create_draft(channel_id: str, text: str) -> dict | None:
 async def distribute_social(
     social_posts: dict[str, str],
     published_url: str,
-    full_article: str = "",
 ) -> list[str]:
-    """Send social posts to Buffer for all connected channels.
-
-    For LinkedIn, posts the full article instead of the short social post.
-    For X, posts the thread from social_posts.
-    """
+    """Send social posts to Buffer for all connected channels."""
     token = _get_token()
     if not token:
         logger.info("buffer_skipped_no_token")
