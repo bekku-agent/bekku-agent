@@ -110,9 +110,13 @@ async def write(state: AgentState) -> AgentState:
     user_content = "\n\n".join(parts)
 
     try:
+        # Cap tokens for content/feedback to stay under LinkedIn's 3000 char limit
+        # ~750 tokens ≈ 2800 chars. Interactive mode gets full length.
+        token_limit = 1024 if state.task_type in ("content", "feedback") else 16384
+
         response = await client.chat.completions.create(
             model="o3",
-            max_completion_tokens=16384,
+            max_completion_tokens=token_limit,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_content},
@@ -133,6 +137,17 @@ async def write(state: AgentState) -> AgentState:
         # Strip any ---SOCIAL--- section if the model included one
         if "---SOCIAL---" in draft:
             draft = draft.split("---SOCIAL---", 1)[0].strip()
+
+        # Hard cap for LinkedIn — truncate at last paragraph boundary under 2800 chars
+        if state.task_type in ("content", "feedback") and len(draft) > 2800:
+            truncated = draft[:2800]
+            # Cut at last double newline to avoid mid-sentence truncation
+            last_break = truncated.rfind("\n\n")
+            if last_break > 1500:
+                draft = truncated[:last_break].strip()
+            else:
+                draft = truncated.strip()
+            logger.warning("writer_truncated_for_linkedin", original=len(response.choices[0].message.content), final=len(draft))
 
         # Fix unclosed code fences — count ``` occurrences, add closing if odd
         fence_count = draft.count("```")
