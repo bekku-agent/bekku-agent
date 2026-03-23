@@ -209,3 +209,14 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-23 — Your First RevenueCat Android Integration in Kotlin: A Hands-On Tutorial
+- **Category:** tutorial
+- **Format:** gist
+- **Sources:** 0 sources used
+- **Draft length:** 6434 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/7da4d45ade6a2ba403193454e5046c42
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
