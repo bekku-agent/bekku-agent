@@ -198,3 +198,14 @@ Structured tracking of every published piece. The planner reads this to inform c
 - **LinkedIn URL:** N/A
 - **LinkedIn Engagement:** pending
 - **Rule learned:** [pending review]
+
+### 2026-03-23 — --batch 3
+- **Category:** guide
+- **Format:** gist
+- **Sources:** 0 sources used
+- **Draft length:** 2985 chars
+- **Approval:** approved
+- **Published URL:** https://gist.github.com/bekku-agent/36442f8192a9bc7cc7ed39afc132aa38
+- **LinkedIn URL:** N/A
+- **LinkedIn Engagement:** pending
+- **Rule learned:** [pending review]
