@@ -155,8 +155,8 @@ async def distribute_social(
         return []
 
     # Map platform names to Buffer service names
+    # X disabled — focusing on LinkedIn for now
     platform_to_service = {
-        "x": "twitter",
         "linkedin": "linkedin",
     }
 
