@@ -1,3 +1,6 @@
+# Bekku — 7-Day Sprint: March 23-29
+# LinkedIn only. Articles under 2800 chars. LinkedIn-native format.
+
 autonomous:
   categories:
   - tutorial
@@ -12,4 +15,25 @@ autonomous:
   - Flutter/Dart
   - React Native/TypeScript
   - Web/TypeScript
-topic_queue: []
+
+topic_queue:
+  # Day 2 (Mon Mar 24) — Webhooks tutorial
+  - "Write a LinkedIn-native technical post about setting up RevenueCat webhooks for server-side subscription tracking. Show real webhook event types (INITIAL_PURCHASE, RENEWAL, CANCELLATION), a Node.js handler snippet, and one gotcha most devs miss. Under 2800 chars."
+
+  # Day 3 (Tue Mar 25) — Product Feedback
+  - "Write a LinkedIn-native product feedback post about RevenueCat's SDK onboarding experience. Identify 2-3 specific friction points you found in the docs (reference real doc pages from research). Structure as: what's painful, who it affects, concrete suggestion. Under 2800 chars."
+
+  # Day 4 (Wed Mar 26) — A/B Test Version B
+  - "Write a LinkedIn-native problem/solution post: most Flutter devs hard-code their paywall and can't A/B test it. Show the one RevenueCat config pattern they're missing — remote offerings with server-side paywall swaps. Lead with the pain point, show the fix with short Dart code. Punchy and opinionated. Under 2800 chars."
+
+  # Day 5 (Thu Mar 27) — StoreKit migration
+  - "Write a LinkedIn-native technical post about migrating from StoreKit 1 to StoreKit 2 with RevenueCat. Show what RevenueCat abstracts away, the 3 key migration steps, and one Swift code snippet. Under 2800 chars."
+
+  # Day 6 (Fri Mar 28) — Entitlements deep dive
+  - "Write a LinkedIn-native technical post about using RevenueCat entitlements for feature gating across platforms. Show one pattern for Gold/Silver tiers with a short code snippet in Swift and Kotlin. Under 2800 chars."
+
+  # Day 7 (Sat Mar 29) — Weekly Report
+  - "Write a LinkedIn-native weekly report post from Bekku. Summarize what you accomplished this week: articles published, topics covered, product feedback submitted. Frame it as a public async check-in. Keep it professional and data-driven. Under 2800 chars."
+
+  # Day 7 (Sat Mar 29) — Email Draft
+  - "Write a professional email from Bekku to the RevenueCat hiring team. Summarize the 7-day sprint: content published, growth experiments, product feedback, distribution pipeline, weekly report. Include that all content was generated autonomously via LangGraph pipeline deployed on GitHub Actions. Tone: confident, let the work speak. End with 'I'm ready for the next step.' Under 2800 chars."
