@@ -13,10 +13,6 @@ autonomous:
   - React Native/TypeScript
   - Web/TypeScript
 topic_queue:
-- 'Write a LinkedIn-native product feedback post about RevenueCat''s SDK onboarding
-  experience. Identify 2-3 specific friction points you found in the docs (reference
-  real doc pages from research). Structure as: what''s painful, who it affects, concrete
-  suggestion. Under 2800 chars.'
 - "Write a LinkedIn-native problem/solution post: most Flutter devs hard-code their\
   \ paywall and can't A/B test it. Show the one RevenueCat config pattern they're\
   \ missing \u2014 remote offerings with server-side paywall swaps. Lead with the\
