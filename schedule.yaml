@@ -13,11 +13,6 @@ autonomous:
   - React Native/TypeScript
   - Web/TypeScript
 topic_queue:
-- "Write a LinkedIn-native problem/solution post: most Flutter devs hard-code their\
-  \ paywall and can't A/B test it. Show the one RevenueCat config pattern they're\
-  \ missing \u2014 remote offerings with server-side paywall swaps. Lead with the\
-  \ pain point, show the fix with short Dart code. Punchy and opinionated. Under 2800\
-  \ chars."
 - Write a LinkedIn-native technical post about migrating from StoreKit 1 to StoreKit
   2 with RevenueCat. Show what RevenueCat abstracts away, the 3 key migration steps,
   and one Swift code snippet. Under 2800 chars.
