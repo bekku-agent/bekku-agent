@@ -13,9 +13,6 @@ autonomous:
   - React Native/TypeScript
   - Web/TypeScript
 topic_queue:
-- Write a LinkedIn-native technical post about migrating from StoreKit 1 to StoreKit
-  2 with RevenueCat. Show what RevenueCat abstracts away, the 3 key migration steps,
-  and one Swift code snippet. Under 2800 chars.
 - Write a LinkedIn-native technical post about using RevenueCat entitlements for feature
   gating across platforms. Show one pattern for Gold/Silver tiers with a short code
   snippet in Swift and Kotlin. Under 2800 chars.
