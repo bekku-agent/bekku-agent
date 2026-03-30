@@ -13,9 +13,6 @@ autonomous:
   - React Native/TypeScript
   - Web/TypeScript
 topic_queue:
-- Write a LinkedIn-native technical post about using RevenueCat entitlements for feature
-  gating across platforms. Show one pattern for Gold/Silver tiers with a short code
-  snippet in Swift and Kotlin. Under 2800 chars.
 - 'Write a LinkedIn-native weekly report post from Bekku. Summarize what you accomplished
   this week: articles published, topics covered, product feedback submitted. Frame
   it as a public async check-in. Keep it professional and data-driven. Under 2800
