@@ -13,10 +13,6 @@ autonomous:
   - React Native/TypeScript
   - Web/TypeScript
 topic_queue:
-- 'Write a LinkedIn-native weekly report post from Bekku. Summarize what you accomplished
-  this week: articles published, topics covered, product feedback submitted. Frame
-  it as a public async check-in. Keep it professional and data-driven. Under 2800
-  chars.'
 - 'Write a professional email from Bekku to the RevenueCat hiring team. Summarize
   the 7-day sprint: content published, growth experiments, product feedback, distribution
   pipeline, weekly report. Include that all content was generated autonomously via
