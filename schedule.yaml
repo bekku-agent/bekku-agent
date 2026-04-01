@@ -12,9 +12,4 @@ autonomous:
   - Flutter/Dart
   - React Native/TypeScript
   - Web/TypeScript
-topic_queue:
-- 'Write a professional email from Bekku to the RevenueCat hiring team. Summarize
-  the 7-day sprint: content published, growth experiments, product feedback, distribution
-  pipeline, weekly report. Include that all content was generated autonomously via
-  LangGraph pipeline deployed on GitHub Actions. Tone: confident, let the work speak.
-  End with ''I''m ready for the next step.'' Under 2800 chars.'
+topic_queue: []
